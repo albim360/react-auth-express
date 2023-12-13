@@ -12,7 +12,6 @@ const LoginPage = () => {
     try {
       // Chiamata alla funzione di login dal contesto di autenticazione
       await login(email, password);
-      // Se il login è riuscito, puoi reindirizzare l'utente alla dashboard o a qualsiasi altra pagina
       // history.push('/dashboard');
     } catch (error) {
       // Se il login ha avuto successo, imposta il messaggio di errore
