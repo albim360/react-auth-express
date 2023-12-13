@@ -1,42 +1,28 @@
 import React, { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import { useNavigate } from 'react-router-dom';
 
+// Componente LoginPage
 const LoginPage = () => {
-  const { handleLoginOrRegistration } = useAuth();
+  const { login } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const navigate = useNavigate();
+  const [error, setError] = useState('');
 
   const handleLogin = async () => {
-    const fakeLoginResponse = {
-      user: {
-        name: 'Tizio',
-        surname: 'Caio',
-        email: 'tizio.caio@email.it',
-      },
-      token: 'fakeToken',
-    };
-
-    const isAuthenticated = await simulateAuthentication(email, password);
-
-    if (isAuthenticated) {
-      handleLoginOrRegistration(fakeLoginResponse);
-      window.alert('Login effettuato con successo.');
-      navigate('/');
-      
-    } else {
-      window.alert('Autenticazione fallita, controlla email e password.');
+    try {
+      // Chiamata alla funzione di login dal contesto di autenticazione
+      await login(email, password);
+      // Se il login è riuscito, puoi reindirizzare l'utente alla dashboard o a qualsiasi altra pagina
+      // history.push('/dashboard');
+    } catch (error) {
+      // Se il login ha avuto successo, imposta il messaggio di errore
+      setError(error.message);
     }
-  };
-
-  const simulateAuthentication = async (enteredEmail, enteredPassword) => {
-    return enteredEmail === 'tizio.caio@email.it' && enteredPassword === 'test123';
   };
 
   return (
     <div>
-      <h1>LoginPage</h1>
+      <h1>Login Page</h1>
       <form
         onSubmit={(e) => {
           e.preventDefault();
@@ -64,6 +50,7 @@ const LoginPage = () => {
         </label>
         <br />
         <button type="submit">Login</button>
+        {error && <p style={{ color: 'red' }}>{error}</p>}
       </form>
     </div>
   );
